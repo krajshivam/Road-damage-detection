@@ -1,27 +1,19 @@
-"""
-Road Damage Detection — YOLOv8 Training Script
-Dataset: RDD2022 v10 (7 classes, 8586 images)
-"""
-
 from ultralytics import YOLO
 
 
 def train():
-    # Load YOLOv8 nano model with pretrained COCO weights
-
-    model = YOLO("runs/detect/runs/rdd_baseline2/weights/last.pt")
+    model = YOLO("yolov8s.pt")  # upgraded from nano to small
 
     model.train(
         data="dataset/data.yaml",
-        epochs=50,
+        epochs=100,  # increased from 50
         imgsz=640,
         batch=32,
         device="mps",
-        amp=False,  # fix for the crash
-        project="runs",
-        name="rdd_baseline",
+        amp=False,
+        project="runs/detect/runs",
+        name="rdd_v2",  # new name so baseline is preserved
         pretrained=True,
-        resume=True,  # resume from epoch 25
         plots=True,
         save=True,
         verbose=True,
