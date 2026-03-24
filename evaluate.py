@@ -8,6 +8,7 @@ Runs best.pt on test set and generates:
 
 from ultralytics import YOLO
 from pathlib import Path
+import cv2
 import random
 
 
