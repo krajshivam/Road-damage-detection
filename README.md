@@ -2,6 +2,8 @@
 
 A computer vision system that automatically detects and classifies road surface damage from dashcam images. Fine-tuned YOLOv8s on the RDD2022 dataset across 7 damage categories, wrapped in a production-ready FastAPI inference endpoint.
 
+**[🚀 Live Demo](https://huggingface.co/spaces/krajshivam/road-damage-detection)** | **[GitHub](https://github.com/krajshivam/road-damage-detection)**
+
 ---
 
 ## 🎯 Results
@@ -40,11 +42,13 @@ road-damage-detection/
 │   └── test/
 ├── runs/
 │   └── best.pt            # Best model weights (download separately)
+├── assets/                # Sample prediction images for README
 ├── scripts/
 │   └── download_data.py   # Dataset download instructions
 ├── train.py               # Training script
 ├── evaluate.py            # Evaluation and prediction visualization
 ├── api.py                 # FastAPI inference server
+├── streamlit_app.py       # Streamlit demo UI (Hugging Face Spaces)
 ├── data.yaml              # Dataset configuration
 └── pyproject.toml         # Dependencies managed with uv
 ```
@@ -65,12 +69,12 @@ road-damage-detection/
 
 - **Architecture:** YOLOv8s (11.2M parameters, pretrained on COCO)
 - **Training hardware:** Nvidia Tesla T4 GPU (Google Colab)
-- **Training duration:** 90 epochs, best checkpoint at epoch 53
+- **Training duration:** 91 epochs, best checkpoint at epoch 53
 - **Key finding:** Overfitting observed after epoch 53 — YOLOv8's built-in model selection saved best weights automatically
 
 ---
 
-## 🚀 Running the API
+## 🚀 Running the API Locally
 
 ### 1. Install dependencies
 
@@ -135,18 +139,20 @@ curl -X POST "http://127.0.0.1:8000/predict" \
 ---
 
 ## 📊 Sample Predictions
-![](assets/image2.jpg)
-![](assets/image5.jpg)
-![](assets/image7.jpg)
-![](assets/image9.jpg)
+
+![Alligator crack detected](assets/image2.jpg)
+![Longitudinal crack detection](assets/image5.jpg)
+![Damaged paint detection](assets/image7.jpg)
+![Multiple damage types detected](assets/image9.jpg)
+
 ---
 
 ## 🔍 Key Findings
 
 - **Manhole covers (AP50: 0.877)** — circular metallic objects with unique shape, easiest class to detect
-- **Crack classes (AP50: 0.34–0.36)** — thin line features that are orientation-sensitive and low-contrast; primary area for improvement
+- **Crack classes (AP50: 0.34–0.37)** — thin line features that are orientation-sensitive and low-contrast; primary area for improvement
 - **Overfitting after epoch 53** — validation mAP peaked then declined; early stopping would have been appropriate
-- **Distribution matters** — model trained on dashcam perspective images performs poorly on close-up or aerial road photos
+- **Distribution shift** — model trained on dashcam perspective images performs poorly on close-up or aerial road photos; a known limitation of the training data
 
 ---
 
@@ -155,11 +161,14 @@ curl -X POST "http://127.0.0.1:8000/predict" \
 | Component | Tool |
 |-----------|------|
 | Model | Ultralytics YOLOv8s |
-| Training | Google Colab (Tesla T4) |
+| Training | Google Colab (Nvidia Tesla T4 GPU) |
 | API Framework | FastAPI + Uvicorn |
+| Demo UI | Streamlit |
+| Deployment | Hugging Face Spaces |
 | Image Processing | Pillow, OpenCV |
 | Package Manager | uv |
-| Dataset | RDD2022 via Roboflow |
+| Dataset | RDD2022 via Roboflow (CC BY 4.0) |
+| Version Control | Git + GitHub |
 
 ---
 
